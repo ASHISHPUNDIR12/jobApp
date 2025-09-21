@@ -1,4 +1,5 @@
 "use server";
+import companies from "@/data/companies.json"
 
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
@@ -16,7 +17,7 @@ export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
 
     const userId = session.user.id;
 
-    const updatedUser = await prisma.user.update({
+     await prisma.user.update({
       where: { id: userId },
       data: { role },
     });
@@ -32,4 +33,11 @@ export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
     console.error("Error while updating the role:", error);
     throw error;
   }
+}
+
+// add dynamic companies 
+
+
+export async function addCompanies(formData: FormData){
+  
 }
