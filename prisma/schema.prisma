@@ -20,49 +20,62 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String? @unique
+  email         String?       @unique
   image         String?
   emailVerified DateTime?
-  role          UserRole  @default(CANDIDATE)
-  jobPosted     Job[]   @relation("JobsPostedByUser")
-  applications Application[]
+  role          UserRole      @default(CANDIDATE)
+  jobPosted     Job[]         @relation("JobsPostedByUser")
+  applications  Application[]
   accounts      Account[]
   sessions      Session[]
+  company       Company[]
 }
 
 model Job {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  image String? @default("/companies/default.webp") 
-  company     String
-  location    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  postedById  String
-  postedBy    User     @relation( "JobsPostedByUser", fields: [postedById], references: [id])
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  image        String?
+  companyId    String
+  companyName  String?
+  company      Company       @relation(fields: [companyId], references: [id])
+  location     String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  postedById   String
+  postedBy     User          @relation("JobsPostedByUser", fields: [postedById], references: [id])
   applications Application[]
 }
 
 model Application {
-  id String @id @default(ulid())
-   yoe Int 
-   skills String[] 
-   education Education @default(INTERMEDIATE)
-   appliedAt DateTime @default(now())
-   resumeUrl String 
-   userId String 
-   jobId String  
-   user User @relation(fields: [userId],references: [id])
-   job Job @relation(fields: [jobId],references: [id])
-   @@unique([userId , jobId])
+  id        String    @id @default(ulid())
+  yoe       Int
+  skills    String[]
+  education Education @default(INTERMEDIATE)
+  appliedAt DateTime  @default(now())
+  resumeUrl String
+  userId    String
+  jobId     String
+  user      User      @relation(fields: [userId], references: [id])
+  job       Job       @relation(fields: [jobId], references: [id])
+
+  @@unique([userId, jobId])
 }
+
+model Company {
+  id            String @id @default(cuid())
+  name          String
+  imageLocalUrl String
+  recruiterId   String?
+  recruiter     User?  @relation(fields: [recruiterId], references: [id])
+  job           Job[]
+}
+
 enum Education {
-  
   INTERMEDIATE
-  GRADUATE 
+  GRADUATE
   POSTGRADUATE
 }
 
@@ -100,4 +113,3 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
