@@ -1,10 +1,10 @@
-"use client"
+"use client";
+import companies from "@/data/companies.json"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import companies from "@/data/companies.json";
 import Autoplay from "embla-carousel-autoplay";
 export default function MovingCompanies() {
   return (

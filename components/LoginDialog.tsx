@@ -19,6 +19,7 @@ export default function LoginDialog() {
       <div className="w-[100px] h-[40px] bg-gray-200 rounded animate-pulse" />
     );
   }
+  
   if (session) {
     return <Avtar  />;
   }

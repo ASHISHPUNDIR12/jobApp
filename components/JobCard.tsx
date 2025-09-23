@@ -3,23 +3,23 @@ import Image from "next/image";
 import {
   Card,
   CardAction,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { Job } from "@/app/generated/prisma";
 
-type Job = {
-  id: String;
-  title: String;
-  description: String;
-  location: String;
-  company: String;
-};
+// type Job = {
+//   id: String;
+//   title: String;
+//   description: String;
+//   location: String;
+//   companyName: String  ;
+  
+// };
 type JobItemProps = {
   jobData: Job;
 };
@@ -34,7 +34,7 @@ export default function JobCard({ jobData }: JobItemProps) {
           <Image
             width={50}
             height={50}
-            src="/companies/google.webp"
+            src={jobData.image || "pvt"}
             alt={"logo"}
           />
           {jobData.location}
