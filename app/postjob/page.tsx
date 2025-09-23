@@ -1,5 +1,4 @@
 import locations from "@/data/location.json";
-import companies from "@/data/companies.json";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,80 +10,86 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { addCompanies } from "../actions";
+import CustomCompany from "@/components/CustomCompany";
+import { postJob } from "../actions";
+import prisma from "@/lib/prisma";
 
-export default function () {
+async function getCompanies() {
+  try {
+    const companies = await prisma.company.findMany();
+    return companies;
+  } catch (err) {
+    console.log("error fetching companies", err);
+  }
+}
+
+export default async function PostJobPage() {
+  const companies = (await getCompanies()) || [];
+
   return (
-    <div>
-      <h1>Post a Job </h1>
-      <form action="">
-        <Input type="text " placeholder="Job Title" />
-        <Textarea placeholder="Job Description" />
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder=" location" />
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Post a Job</h1>
+
+      <form action={postJob} className="space-y-5">
+        {/* Job Title */}
+        <Input
+        name="title"
+          type="text"
+          placeholder="Job Title"
+          className="w-full border rounded-lg p-2 focus:ring-2 "
+        />
+
+        {/* Job Description */}
+        <Textarea
+        name="desc"
+          placeholder="Job Description"
+          className="w-full border rounded-lg p-2 focus:ring-2 "
+        />
+
+        {/* Location Select */}
+        <Select name="location">
+          <SelectTrigger className="w-full border rounded-lg">
+            <SelectValue placeholder="Select Location" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>States</SelectLabel>
               {locations.map((state, index) => (
                 <SelectItem key={index} value={state}>
-                  {" "}
-                  {state}{" "}
+                  {state}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="company" />
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Company</SelectLabel>
-                {companies.map((c) => (
-                  <SelectItem key={c.id} value={c.name}>
-                    {c.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
+
+        {/* Company Select */}
+        <Select name="companyId" >
+          <SelectTrigger className="w-full border rounded-lg">
+            <SelectValue placeholder="Select Company" />
           </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Company</SelectLabel>
+              {companies.map(({name , id }) => (
+                <SelectItem key={id} value={id}>
+                  {name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
         </Select>
-        <Dialog>
-          <form action={addCompanies}>
-            <DialogTrigger asChild>
-              <Button variant="outline">add company</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Company </DialogTitle>
-              </DialogHeader>
-              <Input name="name" type="text" placeholder="Company Name " />
-              <div>
-                <Label htmlFor="picture">Picture</Label>
-                <Input name="imgUrl" id="picture" type="file" />
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button  variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button  type="submit">Add</Button>
-              </DialogFooter>
-            </DialogContent>
-          </form>
-        </Dialog>
+
+        {/* Add Custom Company */}
+      <CustomCompany />
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full bg-black text-white py-2 px-4 rounded-lg shadow hover:bg-black transition"
+        >
+          Post Job
+        </button>
       </form>
     </div>
   );
