@@ -1,18 +1,5 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import ApplyDialog from "@/components/ApplyDialog";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 import { CiLocationOn } from "react-icons/ci";
@@ -33,10 +20,19 @@ export default async function page(props: { params: Promise<{ id: string }> }) {
 
   const detailjob = await focusedJob(id);
 
+    if (!detailjob) {
+    return (
+      <div className="text-center p-10">
+        <h1 className="text-2xl font-bold">Job Not Found</h1>
+        <p>Sorry, the job you are looking for does not exist.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <h1 className="text-6xl md:text-7xl font-bold mb-8 text-gray-900">
-        {detailjob?.company}
+        {detailjob?.companyName}
       </h1>
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -47,7 +43,7 @@ export default async function page(props: { params: Promise<{ id: string }> }) {
           <Image
             width={100}
             height={60}
-            src="/companies/google.webp"
+            src={detailjob?.image || "pvt"}
             alt="company logo"
             className="object-contain"
           />
@@ -65,45 +61,7 @@ export default async function page(props: { params: Promise<{ id: string }> }) {
           {detailjob?.description}
         </p>
       </div>
-      <Dialog>
-        <DialogTrigger className="border border-black px-130 bg-black text-white py-2 rounded ">
-          Apply
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {`Apply for ${detailjob?.title} at ${detailjob?.company}`}
-            </DialogTitle>
-            <DialogDescription>Please fill the form below</DialogDescription>
-          </DialogHeader>
-          <form action="">
-            <Input type="text" placeholder="Year of Experience " />
-            <Input className="mt-3" type="text" placeholder="Skills" />
-            <RadioGroup className="mt-3">
-              <div className="flex items-center gap-3">
-                <RadioGroupItem value="default" id="r1" />
-                <Label htmlFor="r1">Intermediate</Label>
-              </div>
-              <div className="flex items-center gap-3">
-                <RadioGroupItem value="comfortable" id="r2" />
-                <Label htmlFor="r2">Graduate</Label>
-              </div>
-              <div className="flex items-center gap-3">
-                <RadioGroupItem value="compact" id="r3" />
-                <Label htmlFor="r3">Post Graduate</Label>
-              </div>
-            </RadioGroup>
-            <div className="grid w-full max-w-sm items-center gap-3 mt-2">
-              <Label htmlFor="picture">Picture</Label>
-              <Input id="picture" type="file" />
-            </div>
-          </form>
-          <DialogFooter>
-            <Button>Apply</Button>
-            <DialogClose>Cancel</DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ApplyDialog jobId={detailjob?.id} jobTitle={detailjob?.title} companyName={detailjob?.companyName ?? "the company "} />
     </div>
   );
 }

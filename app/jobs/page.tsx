@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import JobCard from "@/components/JobCard";
 import prisma from "@/lib/prisma";
 
