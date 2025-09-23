@@ -8,19 +8,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar } from "./ui/avatar";
-import { useSession } from "next-auth/react";
 import SignOut from "./SignOut";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Avtar() {
-
   const { data: session } = useSession();
   if (!session) {
     return null;
   }
-  const {user} = session
-    const imageUrl = user?.image 
+  const { user } = session;
+  const imageUrl = user?.image;
 
- const userInitials = user?.name
+  const userInitials = user?.name
     ? user.name
         .split(" ")
         .map((n) => n[0])
@@ -28,22 +28,41 @@ export default function Avtar() {
     : "?";
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="outline-none"  >
-        <Avatar >
-          <AvatarImage src={imageUrl|| ""} alt={user?.name || ""} />
-          <AvatarFallback className="text-black-200" >{userInitials}</AvatarFallback>
+      <DropdownMenuTrigger className="outline-none">
+        <Avatar>
+          <AvatarImage src={imageUrl || ""} alt={user?.name || ""} />
+          <AvatarFallback className="text-black-200">
+            {userInitials}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>
-            My Account 
-        </DropdownMenuLabel>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>my jobs</DropdownMenuItem>
-        <DropdownMenuItem>saved jobs</DropdownMenuItem>
+        {user.role === "CANDIDATE" && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link href="/applied-jobs">Applied Jobs</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/liked-jobs">Liked Jobs</Link>
+            </DropdownMenuItem>
+          </>
+        )}
+        {user.role === "RECRUITER" && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link href="/postjob">Post a Job</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/postjob/postedjob">My Posted Jobs</Link>
+            </DropdownMenuItem>
+          </>
+        )}
+
         <DropdownMenuItem>Manage Account</DropdownMenuItem>
         <DropdownMenuItem>
-            <SignOut/>
+          <SignOut />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
