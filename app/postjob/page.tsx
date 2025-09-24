@@ -47,7 +47,7 @@ export default async function PostJobPage() {
         />
 
         {/* Location Select */}
-        <Select name="location">
+        <Select required name="location">
           <SelectTrigger className="w-full border rounded-lg">
             <SelectValue placeholder="Select Location" />
           </SelectTrigger>
@@ -64,7 +64,7 @@ export default async function PostJobPage() {
         </Select>
 
         {/* Company Select */}
-        <Select name="companyId" >
+        <Select required name="companyId" >
           <SelectTrigger className="w-full border rounded-lg">
             <SelectValue placeholder="Select Company" />
           </SelectTrigger>
