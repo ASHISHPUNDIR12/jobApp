@@ -42,10 +42,13 @@ export default function Avtar() {
         {user.role === "CANDIDATE" && (
           <>
             <DropdownMenuItem asChild>
-              <Link href="/applied-jobs">Applied Jobs</Link>
+              <Link href="/jobs">All Jobs</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/liked-jobs">Liked Jobs</Link>
+              <Link href="/jobs/appliedjobs">Applied Jobs</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/jobs/likedjobs">Liked Jobs</Link>
             </DropdownMenuItem>
           </>
         )}
