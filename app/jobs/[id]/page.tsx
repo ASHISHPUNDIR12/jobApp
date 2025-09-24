@@ -1,10 +1,14 @@
+import { auth } from "@/auth";
 import ApplyDialog from "@/components/ApplyDialog";
 
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 import { CiLocationOn } from "react-icons/ci";
 
-export default async function page(props: { params: Promise<{ id: string }> }) {
+export default async function detailJobPage(props: {
+  params: Promise<{ id: string }>;
+}) {
+  const session = await auth();
   const { id } = await props.params;
 
   async function focusedJob(jobId: string) {
@@ -17,10 +21,25 @@ export default async function page(props: { params: Promise<{ id: string }> }) {
       console.error("error", err);
     }
   }
-
+  async function appliedStatus(userId: string, jobId: string) {
+    try {
+      const application = await prisma.application.findUnique({
+        where: {
+          userId_jobId: {
+            userId,
+            jobId,
+          },
+        },
+      });
+      return !!application;
+    } catch (err) {
+      console.error("error ", err);
+    }
+  }
+  const userId = session?.user.id;
   const detailjob = await focusedJob(id);
 
-    if (!detailjob) {
+  if (!detailjob) {
     return (
       <div className="text-center p-10">
         <h1 className="text-2xl font-bold">Job Not Found</h1>
@@ -28,6 +47,9 @@ export default async function page(props: { params: Promise<{ id: string }> }) {
       </div>
     );
   }
+  const hasApplied = userId
+    ? await appliedStatus(userId, detailjob?.id)
+    : false;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -61,7 +83,12 @@ export default async function page(props: { params: Promise<{ id: string }> }) {
           {detailjob?.description}
         </p>
       </div>
-      <ApplyDialog jobId={detailjob?.id} jobTitle={detailjob?.title} companyName={detailjob?.companyName ?? "the company "} />
+      <ApplyDialog
+        jobId={detailjob?.id}
+        jobTitle={detailjob?.title}
+        companyName={detailjob?.companyName ?? "the company "}
+        hasApplied={hasApplied!}
+      />
     </div>
   );
 }
