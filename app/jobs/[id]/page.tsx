@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import ApplyDialog from "@/components/ApplyDialog";
 
-import prisma from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import Image from "next/image";
 import { CiLocationOn } from "react-icons/ci";
 

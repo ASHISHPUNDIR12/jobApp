@@ -1,30 +1,35 @@
 import { auth } from "@/auth";
+import ApplicationCard from "@/components/ApplicationCard";
+import AppliedJobCard from "@/components/AppliedJobCard";
 import JobCard from "@/components/JobCard";
-import prisma from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 
 export default async function appliedJobPage() {
   async function getJobs(userId: string) {
-    const jobs = await prisma.job.findMany({
+    const applications  = await prisma.application.findMany({
       where: {
-        applications: {
-          some: {
-            userId: userId,
-          },
-        },
+        userId: userId,
+      },
+      include: {
+        job: true,
+      },
+      orderBy: {
+        appliedAt: "desc",
       },
     });
-    return jobs;
+    return applications
   }
+
   const session = await auth();
   const userId = session?.user.id;
   if (!userId) {
     return;
   }
-  const appliedJob = await getJobs(userId);
+  const applications = await getJobs(userId)   ;
 
   return (
     <div>
-      {appliedJob.length === 0 ? (
+      {applications.length === 0 ? (
         <div className="text-center mt-20">
           <h2 className="text-2xl font-semibold">No Jobs Applied </h2>
           <p className="text-gray-500 mt-2">
@@ -33,13 +38,9 @@ export default async function appliedJobPage() {
         </div>
       ) : (
         <div className="flex justify-center gap-5">
-          {appliedJob.map((job) => (
-            <JobCard
-              key={job.id}
-              jobData={job}
-              hideSaveButton={true}
-              hideDeleteButton={false}
-            />
+          {applications.map((application) => (
+
+            <AppliedJobCard key={application.id} application={application}  />
           ))}
         </div>
       )}
