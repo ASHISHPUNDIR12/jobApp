@@ -38,6 +38,19 @@ export default async function detailJobPage(props: {
   }
   const userId = session?.user.id;
   const detailjob = await focusedJob(id);
+  // count
+  async function count(jobId: string) {
+    try {
+      const noOfApplicants = await prisma.application.count({
+        where: {
+          jobId: jobId,
+        },
+      });
+      return noOfApplicants;
+    } catch (err) {
+      console.error("not able to count", err);
+    }
+  }
 
   if (!detailjob) {
     return (
@@ -47,6 +60,7 @@ export default async function detailJobPage(props: {
       </div>
     );
   }
+  const totalCount = await count(detailjob?.id);
   const hasApplied = userId
     ? await appliedStatus(userId, detailjob?.id)
     : false;
@@ -61,6 +75,7 @@ export default async function detailJobPage(props: {
         <h2 className="text-3xl md:text-5xl font-semibold text-gray-800">
           {detailjob?.title}
         </h2>
+        <h1>count - {totalCount}</h1>
         <div className="mt-4 md:mt-0">
           <Image
             width={100}
