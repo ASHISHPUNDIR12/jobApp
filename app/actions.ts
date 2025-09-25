@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import path, { resolve } from "path";
 import { writeFile } from "fs/promises";
 import { Education } from "./generated/prisma";
-import { use } from "react";
 
 export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
   console.log("UpdateRole called with role:", role);
@@ -76,7 +75,7 @@ export async function addCompanies(formData: FormData) {
 }
 
 // post a job
-export async function postJob(  formData: FormData) {
+export async function postJob(formData: FormData) {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) {
@@ -113,6 +112,7 @@ export async function postJob(  formData: FormData) {
     console.error("error creating post ", err);
   }
 }
+// applyjob
 export async function applyJob(formData: FormData) {
   const session = await auth();
   const userId = session?.user?.id;
@@ -155,6 +155,8 @@ export async function applyJob(formData: FormData) {
   }
 }
 
+// delete post
+
 export async function deletePost(id: string) {
   const session = await auth();
   const userId = session?.user.id;
@@ -172,3 +174,5 @@ export async function deletePost(id: string) {
     console.error("error deleting todo ", err);
   }
 }
+
+
