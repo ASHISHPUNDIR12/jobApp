@@ -10,42 +10,38 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { Job } from "@/app/generated/prisma";
+import { Application, Job } from "@/app/generated/prisma";
 import { useSession } from "next-auth/react";
 import { deletePost } from "@/app/actions";
+import { Badge } from "./ui/badge";
 
-// type Job = {
-//   id: String;
-//   title: String;
-//   description: String;
-//   location: String;
-//   companyName: String  ;
-
-// };
 type JobItemProps = {
-  jobData: Job;
+  jobData: Job
   hideSaveButton: Boolean;
-  hideDeleteButton : Boolean
+  hideDeleteButton: Boolean;
 };
 
 export default function JobCard({
+
   jobData,
   hideSaveButton = false,
-  hideDeleteButton = false
+  hideDeleteButton = false,
 }: JobItemProps) {
   const { data: session } = useSession();
   const role = session?.user.role;
 
- const deleteThisJobAction  = deletePost.bind(null , jobData.id) 
-
-  
+  const deleteThisJobAction = deletePost.bind(null, jobData.id);
 
   return (
     <Card className="w-80">
       <CardHeader>
         <CardTitle>
           {jobData.title}
-          {!hideDeleteButton && <form action={deleteThisJobAction}><Button  >delete</Button></form> }
+          {!hideDeleteButton && (
+            <form action={deleteThisJobAction}>
+              <Button>delete</Button>
+            </form>
+          )}
         </CardTitle>
 
         <CardDescription>{jobData.description}</CardDescription>
@@ -62,9 +58,12 @@ export default function JobCard({
       <CardFooter>
         <div>
           {role === "CANDIDATE" && (
-            <Link href={`/jobs/${jobData.id}`}>
+            <div>
+                <Link href={`/jobs/${jobData.id}`}>
               <Button className="px-10 mr-10">More details</Button>
             </Link>
+            </div>
+            
           )}
           {role === "RECRUITER" && (
             <Link href={`/postjob/postedjob/${jobData.id}`}>
