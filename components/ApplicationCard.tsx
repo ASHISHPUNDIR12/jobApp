@@ -3,7 +3,7 @@ import { FaSchool } from "react-icons/fa";
 import { IoMdBuild } from "react-icons/io";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import StatusSelect from "./StatusSelect";
-import prisma from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 
 type ApplicationCardProps = {
   candidateData: User;

@@ -1,6 +1,6 @@
 import { Application } from "@/app/generated/prisma";
 import ApplicationCard from "@/components/ApplicationCard";
-import prisma from "@/lib/prisma";
+import {prisma} from "@/lib/prisma";
 import Image from "next/image";
 import { CiLocationOn } from "react-icons/ci";
 

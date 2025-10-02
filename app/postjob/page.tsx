@@ -12,7 +12,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import CustomCompany from "@/components/CustomCompany";
 import { postJob } from "../actions";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 async function getCompanies() {
   try {
@@ -33,7 +34,7 @@ export default async function PostJobPage() {
       <form action={postJob} className="space-y-5">
         {/* Job Title */}
         <Input
-        name="title"
+          name="title"
           type="text"
           placeholder="Job Title"
           className="w-full border rounded-lg p-2 focus:ring-2 "
@@ -41,7 +42,7 @@ export default async function PostJobPage() {
 
         {/* Job Description */}
         <Textarea
-        name="desc"
+          name="desc"
           placeholder="Job Description"
           className="w-full border rounded-lg p-2 focus:ring-2 "
         />
@@ -64,14 +65,14 @@ export default async function PostJobPage() {
         </Select>
 
         {/* Company Select */}
-        <Select required name="companyId" >
+        <Select required name="companyId">
           <SelectTrigger className="w-full border rounded-lg">
             <SelectValue placeholder="Select Company" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Company</SelectLabel>
-              {companies.map(({name , id }) => (
+              {companies.map(({ name, id }) => (
                 <SelectItem key={id} value={id}>
                   {name}
                 </SelectItem>
@@ -81,7 +82,7 @@ export default async function PostJobPage() {
         </Select>
 
         {/* Add Custom Company */}
-      <CustomCompany />
+        <CustomCompany />
 
         {/* Submit Button */}
         <button

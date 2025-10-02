@@ -1,14 +1,14 @@
 "use server";
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
-import {prisma} from "../lib/prisma";
+import { prisma } from "../lib/prisma";
 import { revalidatePath } from "next/cache";
-import path, { resolve } from "path";
+import path from "path";
 import { writeFile } from "fs/promises";
 import { Education, Status } from "./generated/prisma";
-import { TelemetryPlugin } from "next/dist/build/webpack/plugins/telemetry-plugin/telemetry-plugin";
 
 export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
+  console.log({ role });
   console.log("UpdateRole called with role:", role);
 
   try {
@@ -23,6 +23,10 @@ export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
       where: { id: userId },
       data: { role },
     });
+
+    revalidatePath("/");
+    revalidatePath("/jobs");
+    revalidatePath("/postjob");
 
     if (role === "CANDIDATE") {
       revalidatePath("/jobs");
@@ -179,18 +183,15 @@ export async function deletePost(id: string) {
 // updateStatus
 
 export async function updateStatus(applicationId: string, newStatus: Status) {
-
-
   try {
     await prisma.application.update({
       where: {
         id: applicationId,
       },
       data: {
-        status : newStatus
+        status: newStatus,
       },
     });
-    
   } catch (err) {
     console.error("Failed to update status:", err);
   }

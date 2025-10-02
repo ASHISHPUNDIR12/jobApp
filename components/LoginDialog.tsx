@@ -20,7 +20,7 @@ export default function LoginDialog() {
     );
   }
   
-  if (session) {
+  if (session?.user.id) {
     return <Avtar  />;
   }
 

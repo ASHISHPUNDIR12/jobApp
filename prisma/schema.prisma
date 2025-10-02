@@ -50,6 +50,7 @@ model Application {
   education Education @default(INTERMEDIATE)
   appliedAt DateTime  @default(now())
   resumeUrl String
+
   status    Status    @default(APPLIED)
   userId    String
   jobId     String
