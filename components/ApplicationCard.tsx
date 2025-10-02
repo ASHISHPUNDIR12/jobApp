@@ -3,7 +3,8 @@ import { FaSchool } from "react-icons/fa";
 import { IoMdBuild } from "react-icons/io";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import StatusSelect from "./StatusSelect";
-import {prisma} from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
+import { BsDownload } from "react-icons/bs";
 
 type ApplicationCardProps = {
   candidateData: User;
@@ -13,12 +14,10 @@ type ApplicationCardProps = {
 export default async function ({ data, candidateData }: ApplicationCardProps) {
   const application = await prisma.application.findUnique({
     where: {
-      id: data.id
-    }
-  }
-  
-)
-if(!application) return null
+      id: data.id,
+    },
+  });
+  if (!application) return null;
 
   return (
     <div>
@@ -30,7 +29,10 @@ if(!application) return null
         <CardContent>
           <div className="flex justify-between ">
             <p>{`${data.yoe} Years of experience`}</p>
-            <StatusSelect applicationId={data.id} currentStatus = {application.status} />
+            <StatusSelect
+              applicationId={data.id}
+              currentStatus={application.status}
+            />
             <p className="flex">
               <FaSchool className="mt-1 mr-1 " />
               {data.education}{" "}
@@ -42,7 +44,9 @@ if(!application) return null
           </div>
           <div className="w-100% border mt-2 mb-5 "></div>
           <p>{data.appliedAt.toDateString()}</p>
-          <a  type="download" href={`${data.resumeUrl}`}>donload</a>
+          <a target="_blank" type="download" href={`${data.resumeUrl}`}>
+            <BsDownload />
+          </a>
         </CardContent>
       </Card>
     </div>

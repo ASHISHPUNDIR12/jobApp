@@ -60,6 +60,7 @@ export default async function detailJobPage(props: {
       </div>
     );
   }
+  
   const totalCount = await count(detailjob?.id);
   const hasApplied = userId
     ? await appliedStatus(userId, detailjob?.id)

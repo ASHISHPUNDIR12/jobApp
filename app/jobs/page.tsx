@@ -18,6 +18,13 @@ async function getJobs(userId: string, searchTerm?: string) {
           },
         ],
       },
+      include :{
+        savedjobs: {
+        where: {
+          userId: userId,
+        },
+      },
+      },
       orderBy: { createdAt: "desc" },
     });
   }

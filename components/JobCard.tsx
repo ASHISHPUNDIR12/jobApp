@@ -1,5 +1,7 @@
 "use client";
 import Image from "next/image";
+import { CiHeart } from "react-icons/ci";
+
 import {
   Card,
   CardAction,
@@ -10,19 +12,17 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { Application, Job } from "@/app/generated/prisma";
 import { useSession } from "next-auth/react";
 import { deletePost } from "@/app/actions";
-import { Badge } from "./ui/badge";
+import { Job } from "@prisma/client";
 
 type JobItemProps = {
-  jobData: Job
+  jobData: Job;
   hideSaveButton: Boolean;
   hideDeleteButton: Boolean;
 };
 
 export default function JobCard({
-
   jobData,
   hideSaveButton = false,
   hideDeleteButton = false,
@@ -59,18 +59,21 @@ export default function JobCard({
         <div>
           {role === "CANDIDATE" && (
             <div>
-                <Link href={`/jobs/${jobData.id}`}>
-              <Button className="px-10 mr-10">More details</Button>
-            </Link>
+              <Link href={`/jobs/${jobData.id}`}>
+                <Button className="px-10 mr-10">More details</Button>
+              </Link>
             </div>
-            
           )}
           {role === "RECRUITER" && (
             <Link href={`/postjob/postedjob/${jobData.id}`}>
               <Button className="px-10 mr-10">More details</Button>
             </Link>
           )}
-          {!hideSaveButton && <Button>Saved </Button>}
+          {!hideSaveButton && (
+           
+            <button>save</button>
+            
+          )}
         </div>
       </CardFooter>
     </Card>

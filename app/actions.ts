@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { Education, Status } from "./generated/prisma";
+import { supabase } from "@/lib/supabase";
 
 export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
   console.log({ role });
@@ -57,17 +58,30 @@ export async function addCompanies(formData: FormData) {
     throw new Error("Company name and logo are required.");
   }
   const bytes = await imageFile.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const filePath = path.join(process.cwd(), "public/uploads", imageFile.name);
-  await writeFile(filePath, buffer);
+  const buffer = new Uint8Array(bytes);
 
-  const dbLogoUrl = `/uploads/${imageFile.name}`;
+    const filePath = `companies/${userId}-${Date.now()}-${imageFile.name}`;
+
+     const { data, error } = await supabase.storage
+    .from("companies") 
+    .upload(filePath, buffer, {
+      contentType: imageFile.type,
+      upsert: false,
+    });
+
+     if (error) {
+    console.error("Supabase upload error:", error);
+    throw new Error("Failed to upload image to Supabase");
+  }
+const {
+    data: { publicUrl },
+  } = supabase.storage.from("companies").getPublicUrl(filePath);
 
   try {
     await prisma.company.create({
       data: {
         name: name,
-        imageLocalUrl: dbLogoUrl,
+        imageLocalUrl: publicUrl,
         recruiterId: userId,
       },
     });
@@ -139,14 +153,30 @@ export async function applyJob(formData: FormData) {
   const bytes = await resumeFile.arrayBuffer();
   const buffer = Buffer.from(bytes);
   const resumeUrl = path.join("/uploads", `${userId}-${resumeFile.name}`);
-  await writeFile(path.join(process.cwd(), "public", resumeUrl), buffer);
+
+
+     const { data, error } = await supabase.storage
+    .from("resumes") 
+    .upload(resumeUrl, buffer, {
+      contentType: resumeFile.type,
+      upsert: false,
+    });
+
+     if (error) {
+    console.error("Supabase upload error:", error);
+    throw new Error("Failed to upload pdf to Supabase");
+  }
+const {
+    data: { publicUrl },
+  } = supabase.storage.from("companies").getPublicUrl(resumeUrl);
+
 
   try {
     await prisma.application.create({
       data: {
         yoe: yearsOfExperience,
         skills,
-        resumeUrl,
+        resumeUrl : publicUrl,
         education,
         userId: userId,
         jobId: jobId,
