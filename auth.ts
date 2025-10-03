@@ -2,10 +2,10 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
-import { prismaEdge } from "./lib/prisma-edge";
+import { prisma } from "./lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prismaEdge),
+  adapter: PrismaAdapter(prisma),
   providers: [Google],
   debug: true,
   session: {
@@ -16,16 +16,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signOut: "/",
   },
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
       }
-
-      // Always fetch the latest role from database to ensure it's up to date
       if (token.id) {
         try {
-          const dbUser = await prismaEdge.user.findUnique({
+          const dbUser = await prisma.user.findUnique({
             where: { id: token.id as string },
             select: { role: true },
           });

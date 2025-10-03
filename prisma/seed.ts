@@ -14,9 +14,8 @@ async function main() {
     { name: 'Meta', imageLocalUrl: '/companies/meta.svg' },
     { name: 'Microsoft', imageLocalUrl: '/companies/microsoft.webp' },
     { name: 'Netflix', imageLocalUrl: '/companies/netflix.png' },
-    { name: 'Uber', imageLocalUrl: '/companies/uber.svg' },
   ],
-  skipDuplicates: true, // Prevents errors if you run the seed multiple times
+  skipDuplicates: true, 
 });
 
   console.log("✅ Successfully created companies  for all recruiters.");
