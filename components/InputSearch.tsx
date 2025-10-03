@@ -24,9 +24,9 @@ export default function InputSearch() {
     router.push(`/jobs?${params.toString()}`);
   }, [query, searchParams, router]);
 
-  function clear(){
-    setText("")
-    router.push("/jobs")
+  function clear() {
+    setText("");
+    router.push("/jobs");
   }
   return (
     <div className="w-100vw text-center    ">
@@ -35,11 +35,11 @@ export default function InputSearch() {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setText(e.target.value);
         }}
-        className="w-[50%]"
+        className="w-[50%] mr-2 "
         type="search"
         placeholder="Search for jobs by title, skill, or company..."
       />
-      <Button onClick={clear}  >Clear</Button>
+      <Button onClick={clear}>Clear</Button>
     </div>
   );
 }

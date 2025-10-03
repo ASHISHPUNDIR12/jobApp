@@ -1,10 +1,10 @@
-import { Application, User } from "@/app/generated/prisma";
 import { FaSchool } from "react-icons/fa";
 import { IoMdBuild } from "react-icons/io";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import StatusSelect from "./StatusSelect";
 import { prisma } from "@/lib/prisma";
 import { BsDownload } from "react-icons/bs";
+import { Application, User } from "@prisma/client";
 
 type ApplicationCardProps = {
   candidateData: User;
@@ -17,7 +17,7 @@ export default async function ({ data, candidateData }: ApplicationCardProps) {
       id: data.id,
     },
   });
-  if (!application) return null;
+  if (!application) return null
 
   return (
     <div>

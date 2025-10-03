@@ -42,18 +42,21 @@ export default function Avtar() {
         {user.role === "CANDIDATE" && (
           <>
             <DropdownMenuItem asChild>
+              <Link href="/">Home</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/jobs">All Jobs</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/jobs/appliedjobs">Applied Jobs</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/jobs/likedjobs">Liked Jobs</Link>
-            </DropdownMenuItem>
           </>
         )}
         {user.role === "RECRUITER" && (
           <>
+            <DropdownMenuItem asChild>
+              <Link href="/">Home</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/postjob">Post a Job</Link>
             </DropdownMenuItem>
@@ -63,7 +66,6 @@ export default function Avtar() {
           </>
         )}
 
-        <DropdownMenuItem>Manage Account</DropdownMenuItem>
         <DropdownMenuItem>
           <SignOut />
         </DropdownMenuItem>

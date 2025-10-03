@@ -51,7 +51,10 @@ export default function CustomCompany() {
 
           {/* Picture Upload */}
           <div className="space-y-2">
-            <Label htmlFor="picture" className="text-sm font-medium text-gray-700">
+            <Label
+              htmlFor="picture"
+              className="text-sm font-medium text-gray-700"
+            >
               Company Logo
             </Label>
             <Input

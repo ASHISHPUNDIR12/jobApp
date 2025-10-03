@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { CiHeart } from "react-icons/ci";
 
 import {
   Card,
@@ -18,8 +17,8 @@ import { Job } from "@prisma/client";
 
 type JobItemProps = {
   jobData: Job;
-  hideSaveButton: Boolean;
-  hideDeleteButton: Boolean;
+  hideSaveButton?: boolean;
+  hideDeleteButton?: boolean;
 };
 
 export default function JobCard({
@@ -33,46 +32,50 @@ export default function JobCard({
   const deleteThisJobAction = deletePost.bind(null, jobData.id);
 
   return (
-    <Card className="w-80">
-      <CardHeader>
-        <CardTitle>
+    <Card className="w-80 h-[250px] flex flex-col justify-between shadow-md rounded-2xl">
+      {/* Header */}
+      <CardHeader className="flex-1">
+        {/* Title */}
+        <CardTitle className="text-lg font-semibold line-clamp-2">
           {jobData.title}
-          {!hideDeleteButton && (
-            <form action={deleteThisJobAction}>
-              <Button>delete</Button>
-            </form>
-          )}
         </CardTitle>
 
-        <CardDescription>{jobData.description}</CardDescription>
-        <CardAction>
-          <Image
-            width={50}
-            height={50}
-            src={jobData.image || "pvt"}
-            alt={"logo"}
-          />
-          {jobData.location}
-        </CardAction>
+        {/* Location + Logo in one line */}
+        <div className="flex justify-between items-center mt-2">
+          <p className="text-sm text-gray-600">{jobData.location}</p>
+          <div className="relative bg-black border rounded w-16 h-8 flex-shrink-0 flex items-center justify-center">
+            <Image
+              fill
+              className="object-contain p-1"
+              src={jobData.image || "/placeholder.png"}
+              alt="logo"
+            />
+          </div>
+        </div>
+
+        {/* Description */}
+        <CardDescription className="mt-2 line-clamp-3 text-sm truncate">
+          {jobData.description}
+        </CardDescription>
       </CardHeader>
-      <CardFooter>
-        <div>
-          {role === "CANDIDATE" && (
-            <div>
-              <Link href={`/jobs/${jobData.id}`}>
-                <Button className="px-10 mr-10">More details</Button>
-              </Link>
-            </div>
-          )}
+
+      {/* Footer */}
+      <CardFooter className="mt-auto flex justify-center">
+        {role === "CANDIDATE" && (
+          <Link href={`/jobs/${jobData.id}`} className="w-full">
+            <Button className="w-full">More details</Button>
+          </Link>
+        )}
+        <div className="flex gap-5 ">
           {role === "RECRUITER" && (
-            <Link href={`/postjob/postedjob/${jobData.id}`}>
-              <Button className="px-10 mr-10">More details</Button>
+            <Link href={`/postjob/postedjob/${jobData.id}`} className="w-full">
+              <Button className="w-40">More details</Button>
             </Link>
           )}
-          {!hideSaveButton && (
-           
-            <button>save</button>
-            
+          {!hideDeleteButton && (
+            <form action={deleteThisJobAction}>
+              <Button variant="destructive">Delete</Button>
+            </form>
           )}
         </div>
       </CardFooter>
