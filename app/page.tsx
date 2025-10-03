@@ -3,6 +3,7 @@ import Image from "next/image";
 import banner from "@/public/banner.jpeg";
 import Acordian from "@/components/Acordian";
 import Homebtn from "@/components/HomeBtn";
+import Footer from "@/components/Footer";
 export default async function Home() {
   return (
     <div className="">
@@ -12,7 +13,7 @@ export default async function Home() {
         <p className="mt-10 font-semibold ">
           Explore Thaosands of job listing or find the perfect candidate
         </p>
-       <Homebtn/>
+        <Homebtn />
         <div className="mt-15">
           <MovingCompanies />
         </div>
@@ -28,8 +29,11 @@ export default async function Home() {
           </div>
         </div>
         <div className=" max-w-[85%] mx-auto mt-10">
-          <Acordian/>
+          <Acordian />
         </div>
+      </div>
+      <div className="text-center">
+        <Footer />
       </div>
     </div>
   );
