@@ -2,9 +2,9 @@ import { auth } from "@/auth";
 import InputSearch from "@/components/InputSearch";
 import JobCard from "@/components/JobCard";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 async function getJobs(userId: string, searchTerm?: string) {
-
   if (searchTerm && searchTerm.trim() !== "") {
     return await prisma.job.findMany({
       where: {
@@ -18,13 +18,7 @@ async function getJobs(userId: string, searchTerm?: string) {
           },
         ],
       },
-      include :{
-        savedjobs: {
-        where: {
-          userId: userId,
-        },
-      },
-      },
+
       orderBy: { createdAt: "desc" },
     });
   }
@@ -40,9 +34,12 @@ async function getJobs(userId: string, searchTerm?: string) {
 export default async function JobPage({
   searchParams,
 }: {
-  searchParams?: { search?: string };
+  searchParams?: Promise<{ search?: string }>;
 }) {
   const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
   const userId = session?.user.id;
 
   if (!userId) {
@@ -52,8 +49,8 @@ export default async function JobPage({
       </div>
     );
   }
-
-  const searchTerm = searchParams?.search;
+  const params = await searchParams;
+  const searchTerm = params?.search;
 
   const jobs = await getJobs(userId, searchTerm);
 

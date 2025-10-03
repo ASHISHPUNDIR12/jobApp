@@ -1,12 +1,11 @@
 import { auth } from "@/auth";
-import ApplicationCard from "@/components/ApplicationCard";
 import AppliedJobCard from "@/components/AppliedJobCard";
-import JobCard from "@/components/JobCard";
-import {prisma} from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export default async function appliedJobPage() {
   async function getJobs(userId: string) {
-    const applications  = await prisma.application.findMany({
+    const applications = await prisma.application.findMany({
       where: {
         userId: userId,
       },
@@ -17,15 +16,15 @@ export default async function appliedJobPage() {
         appliedAt: "desc",
       },
     });
-    return applications
+    return applications;
   }
 
   const session = await auth();
   const userId = session?.user.id;
   if (!userId) {
-    return;
+    redirect("/");
   }
-  const applications = await getJobs(userId)   ;
+  const applications = await getJobs(userId);
 
   return (
     <div>
@@ -37,10 +36,9 @@ export default async function appliedJobPage() {
           </p>
         </div>
       ) : (
-        <div className="flex justify-center gap-5">
+        <div className="flex flex-wrap justify-center gap-5">
           {applications.map((application) => (
-
-            <AppliedJobCard key={application.id} application={application}  />
+            <AppliedJobCard key={application.id} application={application} />
           ))}
         </div>
       )}
