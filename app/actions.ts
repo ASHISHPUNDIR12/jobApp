@@ -4,14 +4,11 @@ import { auth } from "../auth";
 import { prisma } from "../lib/prisma";
 import { revalidatePath } from "next/cache";
 import path from "path";
-import { writeFile } from "fs/promises";
-import { Education, Status } from "./generated/prisma";
 import { supabase } from "@/lib/supabase";
+import { Education, Status } from "@prisma/client";
 
 export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
-  console.log({ role });
   console.log("UpdateRole called with role:", role);
-
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -60,20 +57,20 @@ export async function addCompanies(formData: FormData) {
   const bytes = await imageFile.arrayBuffer();
   const buffer = new Uint8Array(bytes);
 
-    const filePath = `companies/${userId}-${Date.now()}-${imageFile.name}`;
+  const filePath = `companies/${userId}-${Date.now()}-${imageFile.name}`;
 
-     const { data, error } = await supabase.storage
-    .from("companies") 
+  const { data, error } = await supabase.storage
+    .from("companies")
     .upload(filePath, buffer, {
       contentType: imageFile.type,
       upsert: false,
     });
 
-     if (error) {
+  if (error) {
     console.error("Supabase upload error:", error);
     throw new Error("Failed to upload image to Supabase");
   }
-const {
+  const {
     data: { publicUrl },
   } = supabase.storage.from("companies").getPublicUrl(filePath);
 
@@ -154,29 +151,27 @@ export async function applyJob(formData: FormData) {
   const buffer = Buffer.from(bytes);
   const resumeUrl = path.join("/uploads", `${userId}-${resumeFile.name}`);
 
-
-     const { data, error } = await supabase.storage
-    .from("resumes") 
+  const { data, error } = await supabase.storage
+    .from("resumes")
     .upload(resumeUrl, buffer, {
       contentType: resumeFile.type,
-      upsert: false,
+      upsert: true,
     });
 
-     if (error) {
+  if (error) {
     console.error("Supabase upload error:", error);
     throw new Error("Failed to upload pdf to Supabase");
   }
-const {
+  const {
     data: { publicUrl },
   } = supabase.storage.from("companies").getPublicUrl(resumeUrl);
-
 
   try {
     await prisma.application.create({
       data: {
         yoe: yearsOfExperience,
         skills,
-        resumeUrl : publicUrl,
+        resumeUrl: publicUrl,
         education,
         userId: userId,
         jobId: jobId,
