@@ -14,6 +14,7 @@ import CustomCompany from "@/components/CustomCompany";
 import { postJob } from "../actions";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 async function getCompanies() {
   try {
@@ -25,6 +26,10 @@ async function getCompanies() {
 }
 
 export default async function PostJobPage() {
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
   const companies = (await getCompanies()) || [];
 
   return (
