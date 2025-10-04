@@ -40,6 +40,7 @@ export default async function JobPage({
   if (!session) {
     redirect("/");
   }
+
   const userId = session?.user.id;
 
   if (!userId) {

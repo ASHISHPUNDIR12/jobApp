@@ -59,24 +59,24 @@ export default async function detailJobPage(props: {
     : false;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
+    <div className="max-w-5xl mx-auto px-4 py-8 sm:py-12">
       {/* Company name */}
-      <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-gray-900">
+      <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 sm:mb-6 text-gray-900 text-center md:text-left">
         {detailjob?.companyName}
       </h1>
 
       {/* Title, count & logo */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
-        <div>
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-800">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="text-center md:text-left">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800">
             {detailjob?.title}
           </h2>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">
             Applicants: <span className="font-medium">{totalCount}</span>
           </p>
         </div>
 
-        <div className="relative bg-black border rounded-lg w-28 h-16 flex items-center justify-center shadow-sm">
+        <div className="relative bg-black border rounded-lg w-24 h-14 sm:w-28 sm:h-16 flex items-center justify-center shadow-sm">
           <Image
             src={detailjob?.image || "/placeholder.png"}
             alt="company logo"
@@ -87,17 +87,17 @@ export default async function detailJobPage(props: {
       </div>
 
       {/* Location */}
-      <div className="flex items-center text-gray-600 mb-8">
-        <CiLocationOn className="mr-2 text-2xl text-gray-500" />
-        <span className="text-lg">{detailjob?.location}</span>
+      <div className="flex items-center justify-center md:justify-start text-gray-600 mb-6 sm:mb-8">
+        <CiLocationOn className="mr-2 text-xl sm:text-2xl text-gray-500" />
+        <span className="text-base sm:text-lg">{detailjob?.location}</span>
       </div>
 
       {/* Description */}
-      <div className="mb-10">
-        <h3 className="text-2xl font-semibold mb-3 text-gray-800">
+      <div className="mb-8 sm:mb-10">
+        <h3 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 text-center md:text-left">
           About the Job
         </h3>
-        <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+        <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
           {detailjob?.description}
         </p>
       </div>
