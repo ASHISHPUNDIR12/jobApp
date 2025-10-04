@@ -206,6 +206,7 @@ export async function deletePost(id: string) {
     await prisma.job.delete({
       where: {
         id: id,
+        postedById : userId
       },
     });
     revalidatePath("/posted/postedjob");
