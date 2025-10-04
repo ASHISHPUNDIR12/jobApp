@@ -4,7 +4,7 @@ import { updateRole } from "../app/actions";
 
 export default function ValidateBtn() {
   return (
-    <div className="pt-10 flex justify-center gap-10">
+    <div className="pt-10 flex sm:flex-row flex-col justify-center gap-10">
       <form action={updateRole.bind(null, "CANDIDATE")}>
         <button
         

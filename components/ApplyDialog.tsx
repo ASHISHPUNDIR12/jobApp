@@ -15,6 +15,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
+
+function SubmitButton() {
+  const { pending } = useFormStatus(); // track if form is submitting
+
+  return (
+    <Button type="submit" disabled={pending} className="w-full md:w-auto">
+      {pending ? "Submitting..." : "Submit Application"}
+    </Button>
+  );
+}
 
 export default function ApplyDialog({
   jobId,
@@ -89,7 +100,7 @@ export default function ApplyDialog({
           </div>
 
           <DialogFooter className="mt-6">
-            <Button type="submit">Submit Application</Button>
+            <SubmitButton />
           </DialogFooter>
         </form>
       </DialogContent>

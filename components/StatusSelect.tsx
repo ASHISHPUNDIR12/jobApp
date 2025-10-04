@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import {
   Select,
   SelectContent,
@@ -9,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { updateStatus } from "@/app/actions";
-import { Status } from "@/app/generated/prisma";
+import { Status } from "@prisma/client";
 
 export default function StatusSelect({
   applicationId,
@@ -18,8 +17,6 @@ export default function StatusSelect({
   applicationId: string;
   currentStatus: string;
 }) {
-  const formRef = useRef<HTMLFormElement>(null);
-
   return (
     <form >
       <input type="hidden" name="applicationId" value={applicationId} />

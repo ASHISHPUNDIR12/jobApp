@@ -7,8 +7,9 @@ export default async function Header() {
   const session = await auth();
   const role = session?.user.role;
   return (
-    <header className="flex justify-between px-20 py-5  ">
+    <header className="flex justify-between sm:px-20 py-5 px-2  ">
       <div>
+        {!role && <Image className="w-30" src={logo} alt="Hired" />}
         {role === "CANDIDATE" && (
           <Link className="text-4xl font-bold" href={"/jobs"}>
             <Image className="w-30" src={logo} alt="Hired" />

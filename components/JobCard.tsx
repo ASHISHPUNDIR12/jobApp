@@ -3,17 +3,18 @@ import Image from "next/image";
 
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { deletePost } from "@/app/actions";
 import { Job } from "@prisma/client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 type JobItemProps = {
   jobData: Job;
@@ -23,13 +24,23 @@ type JobItemProps = {
 
 export default function JobCard({
   jobData,
-  hideSaveButton = false,
   hideDeleteButton = false,
 }: JobItemProps) {
   const { data: session } = useSession();
   const role = session?.user.role;
+    const [loading, setLoading] = useState(false);
+      const router = useRouter();
+
+
 
   const deleteThisJobAction = deletePost.bind(null, jobData.id);
+
+   const handleNavigate = (url: string) => {
+    setLoading(true);
+    setTimeout(() => {
+      router.push(url);
+    }, 1000); 
+  };
 
   return (
     <Card className="w-80 h-[250px] flex flex-col justify-between shadow-md rounded-2xl">
@@ -62,16 +73,24 @@ export default function JobCard({
       {/* Footer */}
       <CardFooter className="mt-auto flex justify-center">
         {role === "CANDIDATE" && (
-          <Link href={`/jobs/${jobData.id}`} className="w-full">
-            <Button className="w-full">More details</Button>
-          </Link>
+          <Button
+            className="w-full"
+            onClick={() => handleNavigate(`/jobs/${jobData.id}`)}
+            disabled={loading}
+          >
+            {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "More details"}
+          </Button>
         )}
         <div className="flex gap-5 ">
-          {role === "RECRUITER" && (
-            <Link href={`/postjob/postedjob/${jobData.id}`} className="w-full">
-              <Button className="w-40">More details</Button>
-            </Link>
-          )}
+            {role === "RECRUITER" && (
+          <Button
+            className="w-40"
+            onClick={() => handleNavigate(`/postjob/postedjob/${jobData.id}`)}
+            disabled={loading}
+          >
+            {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "More details"}
+          </Button>
+        )}
           {!hideDeleteButton && (
             <form action={deleteThisJobAction}>
               <Button variant="destructive">Delete</Button>

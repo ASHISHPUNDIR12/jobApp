@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export default function Homebtn() {
   const { data: session } = useSession();
   return (
-    <div className="mt-20 ">
+    <div className="mt-20   ">
       <button
         onClick={() => {
           if (!session) {
@@ -13,7 +13,7 @@ export default function Homebtn() {
           }
           redirect("/validate");
         }}
-        className="border px-20 py-4 bg-blue-700 text-white font-bold rounded mr-5"
+        className="border px-20 py-4 bg-blue-700 text-white font-bold rounded ml-5 mb-1"
       >
         Find jobs
       </button>
