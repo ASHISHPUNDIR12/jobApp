@@ -173,7 +173,7 @@ export async function applyJob(formData: FormData) {
   }
   const {
     data: { publicUrl },
-  } = supabase.storage.from("companies").getPublicUrl(resumeUrl);
+  } = supabase.storage.from("resumes").getPublicUrl(resumeUrl);
 
   try {
     await prisma.application.create({
