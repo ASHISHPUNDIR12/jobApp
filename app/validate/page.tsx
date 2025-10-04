@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import ValidateBtn from "@/components/ValidateBtn";
 import { redirect } from "next/navigation";
 
-export default async function () {
+export default async function validatepage () {
   const session = await auth();
   if (!session) {
     redirect("/");
