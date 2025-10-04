@@ -22,6 +22,7 @@ export async function updateRole(role: "CANDIDATE" | "RECRUITER") {
       data: { role },
     });
 
+
     revalidatePath("/");
     revalidatePath("/jobs");
     revalidatePath("/postjob");
@@ -59,7 +60,7 @@ export async function addCompanies(formData: FormData) {
 
   const filePath = `companies/${userId}-${Date.now()}-${imageFile.name}`;
 
-  const { data, error } = await supabase.storage
+  const {  error } = await supabase.storage
     .from("companies")
     .upload(filePath, buffer, {
       contentType: imageFile.type,
@@ -91,7 +92,13 @@ export async function addCompanies(formData: FormData) {
 }
 
 // post a job
-export async function postJob(formData: FormData) {
+
+  interface FormState {
+      success : boolean , 
+      message : string
+    }
+export async function postJob( prevState : FormState ,  formData: FormData) {
+
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) {
@@ -108,7 +115,7 @@ export async function postJob(formData: FormData) {
     },
   });
   if (!company) {
-    throw new Error("Company not found ");
+    return {success : false , message : "Company not found"}
   }
 
   try {
@@ -124,8 +131,10 @@ export async function postJob(formData: FormData) {
       },
     });
     revalidatePath("/postjob");
+    return {success : true , message : "job created succesfully "}
   } catch (err) {
     console.error("error creating post ", err);
+    return {success : false , message : "failed to create job "}
   }
 }
 // applyjob
@@ -151,7 +160,7 @@ export async function applyJob(formData: FormData) {
   const buffer = Buffer.from(bytes);
   const resumeUrl = path.join("/uploads", `${userId}-${resumeFile.name}`);
 
-  const { data, error } = await supabase.storage
+  const {  error } = await supabase.storage
     .from("resumes")
     .upload(resumeUrl, buffer, {
       contentType: resumeFile.type,
