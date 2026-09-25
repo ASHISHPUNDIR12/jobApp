@@ -7,64 +7,64 @@ import Footer from "@/components/Footer";
 
 export default async function Home() {
   return (
-    <div>
-      <div className="text-center mt-10 md:mt-30 px-4">
+    <div className="overflow-hidden">
+      <div className="content-shell pt-16 text-center sm:pt-24">
         {/* Hero text */}
-        <p className="text-4xl md:text-8xl font-bold leading-tight">
-          Find Your Dream Job
-        </p>
-        <p className="text-4xl md:text-8xl font-bold leading-tight">
-          and get Hired
-        </p>
+        <p className="eyebrow">A better way to work</p>
+        <h1 className="mx-auto mt-5 max-w-4xl text-5xl font-black leading-[0.98] tracking-[-0.05em] text-slate-950 sm:text-7xl lg:text-8xl">
+          Find your next <span className="text-primary">great fit.</span>
+        </h1>
 
-        <p className="mt-6 md:mt-10 font-semibold text-sm md:text-base">
-          Explore Thousands of job listings or find the perfect candidate
+        <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+          Explore standout opportunities, discover talented people, and take the next step with confidence.
         </p>
 
         {/* CTA Button */}
-        <div className="mt-6 md:mt-10  "  >
+        <div className="mt-8">
           <Homebtn />
         </div>
 
         {/* Moving companies */}
-        <div className="mt-10 md:mt-15">
+        <div className="mx-auto mt-16 max-w-5xl">
           <MovingCompanies />
         </div>
 
         {/* Banner image */}
-        <div className="mt-8">
+        <div className="relative mt-4 overflow-hidden rounded-3xl border border-white/60 bg-white/60 p-2 shadow-2xl shadow-indigo-950/10">
           <Image
-            className="mx-auto rounded w-full max-w-[900px] h-auto"
+            className="mx-auto h-auto w-full rounded-2xl object-cover"
             src={banner}
-            alt="banner"
+            alt="A team collaborating at work"
             priority
           />
         </div>
 
         {/* Features section */}
-        <div className="flex flex-col md:flex-row justify-center gap-5 mt-10 px-4">
-          <div className="border border-black py-5 px-6 md:px-28 text-center md:text-left rounded-md">
-            <p className="text-xl md:text-2xl font-semibold">For Job Seekers</p>
-            <p className="text-sm md:text-base">
+        <div className="mt-12 grid gap-5 text-left md:grid-cols-2">
+          <div className="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-7">
+            <p className="text-xl font-bold text-slate-950 md:text-2xl">For job seekers</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600 md:text-base">
               Search and apply for jobs, track applications, and more.
             </p>
           </div>
-          <div className="border border-black py-5 px-6 md:px-28 text-center md:text-left rounded-md">
-            <p className="text-xl md:text-2xl font-semibold">For Employers</p>
-            <p className="text-sm md:text-base">
+          <div className="rounded-2xl border border-teal-100 bg-teal-50/70 p-7">
+            <p className="text-xl font-bold text-slate-950 md:text-2xl">For employers</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600 md:text-base">
               Post jobs, manage applications, and find the best candidates.
             </p>
           </div>
         </div>
 
         {/* Accordion */}
-        <div className="max-w-[90%] md:max-w-[85%] mx-auto mt-10">
+        <div className="mx-auto mt-20 max-w-3xl text-left">
+          <p className="eyebrow text-center">Good to know</p>
+          <h2 className="mb-5 mt-2 text-center text-3xl font-bold tracking-tight text-slate-950">Questions, answered.</h2>
           <Acordian />
         </div>
       </div>
 
       {/* Footer */}
-      <div className="text-center mt-10">
+      <div className="mt-20 text-center">
         <Footer />
       </div>
     </div>

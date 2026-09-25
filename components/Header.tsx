@@ -6,22 +6,13 @@ import { auth } from "@/auth";
 export default async function Header() {
   const session = await auth();
   const role = session?.user.role;
+  const home = role === "CANDIDATE" ? "/jobs" : role === "RECRUITER" ? "/postjob" : "/";
   return (
-    <header className="flex justify-between sm:px-20 py-5 px-2  ">
-      <div>
-        {!role && <Image className="w-30" src={logo} alt="Hired" />}
-        {role === "CANDIDATE" && (
-          <Link className="text-4xl font-bold" href={"/jobs"}>
-            <Image className="w-30" src={logo} alt="Hired" />
-          </Link>
-        )}
-        {role === "RECRUITER" && (
-          <Link className="text-4xl font-bold" href={"/postjob"}>
-            <Image className="w-30" src={logo} alt="Hired" />
-          </Link>
-        )}
-      </div>
-      <div className="mt-5">
+    <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-background/85 px-4 py-4 backdrop-blur-xl sm:px-8">
+      <div className="content-shell flex items-center justify-between">
+        <Link href={home} aria-label="Hired home">
+          <Image className="h-auto w-28" src={logo} alt="Hired" priority />
+        </Link>
         <LoginDialog />
       </div>
     </header>

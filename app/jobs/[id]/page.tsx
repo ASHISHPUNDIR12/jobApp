@@ -59,24 +59,26 @@ export default async function detailJobPage(props: {
     : false;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 sm:py-12">
+    <div className="content-shell py-10 sm:py-16">
+      <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-900/5 sm:p-10">
       {/* Company name */}
-      <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 sm:mb-6 text-gray-900 text-center md:text-left">
+      <p className="eyebrow">Featured opportunity</p>
+      <h1 className="mb-4 mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
         {detailjob?.companyName}
       </h1>
 
       {/* Title, count & logo */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div className="text-center md:text-left">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-800">
+      <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
+        <div>
+          <h2 className="text-2xl font-semibold text-slate-800 sm:text-3xl">
             {detailjob?.title}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">
+          <p className="mt-2 text-sm text-slate-500">
             Applicants: <span className="font-medium">{totalCount}</span>
           </p>
         </div>
 
-        <div className="relative bg-black border rounded-lg w-24 h-14 sm:w-28 sm:h-16 flex items-center justify-center shadow-sm">
+        <div className="relative flex h-16 w-28 items-center justify-center rounded-xl border bg-slate-950 shadow-sm">
           <Image
             src={detailjob?.image || "/placeholder.png"}
             alt="company logo"
@@ -87,19 +89,20 @@ export default async function detailJobPage(props: {
       </div>
 
       {/* Location */}
-      <div className="flex items-center justify-center md:justify-start text-gray-600 mb-6 sm:mb-8">
-        <CiLocationOn className="mr-2 text-xl sm:text-2xl text-gray-500" />
+      <div className="mb-8 flex items-center text-slate-500">
+        <CiLocationOn className="mr-2 text-2xl text-primary" />
         <span className="text-base sm:text-lg">{detailjob?.location}</span>
       </div>
 
       {/* Description */}
       <div className="mb-8 sm:mb-10">
-        <h3 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-3 text-gray-800 text-center md:text-left">
+        <h3 className="mb-3 text-xl font-semibold text-slate-900">
           About the Job
         </h3>
-        <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+        <p className="text-sm leading-7 text-slate-600 sm:text-base">
           {detailjob?.description}
         </p>
+      </div>
       </div>
 
       {/* Apply dialog */}

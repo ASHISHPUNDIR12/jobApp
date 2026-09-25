@@ -43,18 +43,18 @@ export default function JobCard({
   };
 
   return (
-    <Card className="w-80 h-[250px] flex flex-col justify-between shadow-md rounded-2xl">
+    <Card className="h-full min-h-[270px] flex flex-col justify-between rounded-2xl border-slate-200/80 bg-white/90 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-950/10">
       {/* Header */}
       <CardHeader className="flex-1">
         {/* Title */}
-        <CardTitle className="text-lg font-semibold line-clamp-2">
+        <CardTitle className="text-lg font-bold leading-6 line-clamp-2 text-slate-950">
           {jobData.title}
         </CardTitle>
 
         {/* Location + Logo in one line */}
         <div className="flex justify-between items-center mt-2">
-          <p className="text-sm text-gray-600">{jobData.location}</p>
-          <div className="relative bg-black border rounded w-16 h-8 flex-shrink-0 flex items-center justify-center">
+          <p className="text-sm text-slate-500">{jobData.location}</p>
+          <div className="relative flex h-10 w-16 flex-shrink-0 items-center justify-center rounded-lg border bg-slate-950">
             <Image
               fill
               className="object-contain p-1"
@@ -65,13 +65,13 @@ export default function JobCard({
         </div>
 
         {/* Description */}
-        <CardDescription className="mt-2 line-clamp-3 text-sm truncate">
+        <CardDescription className="mt-4 line-clamp-3 text-sm leading-6">
           {jobData.description}
         </CardDescription>
       </CardHeader>
 
       {/* Footer */}
-      <CardFooter className="mt-auto flex justify-center">
+      <CardFooter className="mt-auto flex justify-center border-t border-slate-100 pt-5">
         {role === "CANDIDATE" && (
           <Button
             className="w-full"
