@@ -20,9 +20,13 @@ export default async function PostJobPage() {
   const companies = (await getCompanies()) || [];
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Post a Job</h1>
+    <div className="content-shell py-10 sm:py-16">
+      <div className="mx-auto max-w-2xl rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-900/5 sm:p-10">
+      <p className="eyebrow">For growing teams</p>
+      <h1 className="mb-2 mt-2 text-3xl font-bold tracking-tight text-slate-950">Post a job</h1>
+      <p className="mb-8 text-sm leading-6 text-slate-500">Tell great candidates why this is the right opportunity for them.</p>
       <PostjobForm companies={companies} />
+      </div>
     </div>
   );
 }

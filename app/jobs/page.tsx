@@ -56,17 +56,19 @@ export default async function JobPage({
   const jobs = await getJobs(userId, searchTerm);
 
   return (
-    <div>
+    <div className="pb-20">
       <InputSearch />
       {jobs.length === 0 ? (
-        <div className="text-center mt-20">
-          <h2 className="text-2xl font-semibold">No Jobs Found</h2>
-          <p className="text-gray-500 mt-2">
+        <div className="content-shell mt-16 text-center">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white/60 p-12">
+          <h2 className="text-2xl font-semibold">No jobs found</h2>
+          <p className="mt-2 text-slate-500">
             Your search did not match any available jobs.
           </p>
+          </div>
         </div>
       ) : (
-        <div className="flex flex-wrap justify-center mt-10 gap-10">
+        <div className="content-shell mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {jobs.map((job) => (
             <JobCard
               key={job.id}
